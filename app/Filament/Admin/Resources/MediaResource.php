@@ -3,17 +3,20 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\MediaResource\Pages;
-use App\Filament\Admin\Resources\MediaResource\RelationManagers;
+use App\Forms\Components\MyAdvancedFileUpload;
 use App\Models\Media;
+use Asmit\FilamentUpload\Enums\PdfViewFit;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use BezhanSalleh\FilamentShield\Traits\HasShieldFormComponents;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Storage;
 
 class MediaResource extends Resource implements HasShieldPermissions
 {
@@ -27,6 +30,8 @@ class MediaResource extends Resource implements HasShieldPermissions
     protected static ?string $navigationIcon = 'heroicon-o-camera';
 
     protected static ?string $activeNavigationIcon = 'heroicon-s-camera';
+
+    protected static ?string $navigationBadgeTooltip = 'Số phương tiện trong hệ thống';
 
     protected static ?string $navigationGroup = 'Quản lý tin tức';
 
@@ -48,7 +53,27 @@ class MediaResource extends Resource implements HasShieldPermissions
     {
         return $form
             ->schema([
-                //
+                MyAdvancedFileUpload::make('url')
+                    ->required()
+                    ->label("Upload Pdf")
+                    ->pdfPreviewHeight(630) // Customize preview height
+                    ->pdfDisplayPage(1) // Set default page
+                    ->pdfToolbar(true) // Enable toolbar
+                    ->pdfZoomLevel(100) // Set zoom level
+                    ->pdfFitType(PdfViewFit::FIT) // Set fit type
+                    ->pdfNavPanes(true)
+                    ->maxParallelUploads(1)
+                    ->imagePreviewHeight('250')
+                    ->loadingIndicatorPosition('left')
+//                    ->panelAspectRatio('21:9')
+                    ->openable()
+//                    ->panelLayout('integrated')
+                    ->removeUploadedFileButtonPosition('right')
+//                    ->uploadButtonPosition('left')
+                    ->uploadProgressIndicatorPosition('left')
+//                    ->panelLayout('compact')         // 👈 Nếu cần hiển thị theo dạng lưới
+//                    ->itemPanelAspectRatio(1)
+                    ->columnSpan('full')
             ]);
     }
 
@@ -56,13 +81,32 @@ class MediaResource extends Resource implements HasShieldPermissions
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('url')
+                    ->label('Link')
+                    ->url(fn($record) => Storage::disk('public')->url($record->url))
+                    ->openUrlInNewTab(),
+                Tables\Columns\TextColumn::make('type')
+                    ->label('Loại')
+                    ->formatStateUsing(fn($state) => $state->getLabel()),
+                Tables\Columns\TextColumn::make('post.title')
+                    ->label('Bài viết')
+                    ->searchable()
+                    ->sortable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label('Sửa'),
+                Tables\Actions\DeleteAction::make()
+                    ->label('Xóa')
+                    ->successNotification(
+                        Notification::make()
+                            ->title('Bài viết đã xóa')
+                            ->success()
+                            ->body('Bài viết đã được xóa thành công.')
+                    ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -85,5 +129,10 @@ class MediaResource extends Resource implements HasShieldPermissions
             'create' => Pages\CreateMedia::route('/create'),
             'edit' => Pages\EditMedia::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string // customize so luong hien thi trong badge
+    {
+        return static::getModel()::count();
     }
 }

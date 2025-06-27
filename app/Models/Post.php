@@ -14,7 +14,7 @@ class Post extends Model
 
     protected $fillable = [
         'title', 'content', 'excerpt', 'category_id', 'author_id',
-        'published_at', 'image_url', 'status', 'language', 'views',
+        'published_at', 'banner_path', 'status', 'language', 'views',
     ];
 
     protected $casts = [

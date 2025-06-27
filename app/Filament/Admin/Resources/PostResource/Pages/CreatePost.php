@@ -16,6 +16,11 @@ class CreatePost extends CreateRecord
         return $this->getResource()::getUrl('index');
     }
 
+    public function getFormActionsAlignment(): string
+    {
+        return 'right';
+    }
+
     protected function getCreatedNotification(): ?Notification
     {
         return Notification::make()

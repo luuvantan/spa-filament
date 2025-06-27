@@ -16,4 +16,13 @@ enum CommentStatus: string
             self::Spam => 'Spam',
         };
     }
+
+    public function getColor(): string
+    {
+        return match ($this) {
+            self::Approved => 'success',
+            self::Pending => 'warning',
+            self::Spam => 'danger',
+        };
+    }
 }

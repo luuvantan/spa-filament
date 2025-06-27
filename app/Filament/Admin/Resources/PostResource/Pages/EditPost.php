@@ -23,6 +23,11 @@ class EditPost extends EditRecord
         return $this->getResource()::getUrl('index');
     }
 
+    public function getFormActionsAlignment(): string
+    {
+        return 'right';
+    }
+
     protected function getSavedNotification(): ?Notification
     {
         return Notification::make()
