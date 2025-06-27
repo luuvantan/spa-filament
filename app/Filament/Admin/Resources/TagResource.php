@@ -9,6 +9,9 @@ use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use BezhanSalleh\FilamentShield\Traits\HasShieldFormComponents;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Grid;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -28,9 +31,11 @@ class TagResource extends Resource implements HasShieldPermissions
 
     protected static ?string $activeNavigationIcon = 'heroicon-s-tag';
 
+    protected static ?string $navigationBadgeTooltip = 'Số thẻ trong hệ thống';
+
     protected static ?string $navigationGroup = 'Quản lý tin tức';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 3;
 
     public static function getPermissionPrefixes(): array
     {
@@ -48,21 +53,64 @@ class TagResource extends Resource implements HasShieldPermissions
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('name')
+                    ->label('Tên thẻ')
+                    ->placeholder('Nhập tên thẻ')
+                    ->markAsRequired()
+                    ->rules(['required',
+                        'max:255',
+                        fn ($record) => $record
+                            ? "unique:tags,name,{$record->id}"
+                            : 'unique:tags,name'])
+                    ->validationMessages([
+                        'required' => 'Tên thẻ không được để trống.',
+                        'max' => 'Tên thẻ không được vượt quá :max ký tự.',
+                        'unique' => 'Tên thẻ đã tồn tại. Vui lòng chọn tên khác.',
+                    ])
+                    ->columnSpan('full'),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->recordUrl(null)
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Tên thẻ')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Ngày tạo')
+                    ->dateTime('d/m/Y H:i:s')
+                    ->sortable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->label('Xem')
+                    ->modalHeading('Thông tin thẻ')
+                    ->modalSubmitAction(false)
+                    ->modalCancelActionLabel('Đóng')
+                    ->infolist([
+                        Grid::make(2)->schema([
+                            TextEntry::make('name')->label('Tên thẻ'),
+                            TextEntry::make('slug')->label('Slug'),
+                        ]),
+                    ])
+                    ->slideOver(),
+                Tables\Actions\EditAction::make()
+                    ->label('Sửa'),
+                Tables\Actions\DeleteAction::make()
+                    ->label('Xóa')
+                    ->successNotification(
+                        Notification::make()
+                            ->title('Thẻ đã xóa')
+                            ->success()
+                            ->body('Thẻ đã được xóa thành công.')
+                    ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -85,5 +133,10 @@ class TagResource extends Resource implements HasShieldPermissions
             'create' => Pages\CreateTag::route('/create'),
             'edit' => Pages\EditTag::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string // customize so luong hien thi trong badge
+    {
+        return static::getModel()::count();
     }
 }

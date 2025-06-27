@@ -16,11 +16,16 @@ class CreateCategory extends CreateRecord
         return $this->getResource()::getUrl('index');
     }
 
+    public function getFormActionsAlignment(): string
+    {
+        return 'right';
+    }
+
     protected function getCreatedNotification(): ?Notification
     {
         return Notification::make()
-            ->title('Category created')
+            ->title('Danh mục tin tức đã được tạo')
             ->success()
-            ->body('The category has been created successfully.');
+            ->body('Danh mục tin tức mới đã được tạo thành công.');
     }
 }

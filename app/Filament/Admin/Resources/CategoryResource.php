@@ -11,6 +11,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\ViewColumn;
@@ -30,6 +31,8 @@ class CategoryResource extends Resource implements HasShieldPermissions
     protected static ?string $navigationIcon = 'heroicon-o-folder';
 
     protected static ?string $activeNavigationIcon = 'heroicon-s-folder';
+
+    protected static ?string $navigationBadgeTooltip = 'Số danh mục tin tức trong hệ thống';
 
     protected static ?string $navigationGroup = 'Quản lý tin tức';
 
@@ -54,23 +57,35 @@ class CategoryResource extends Resource implements HasShieldPermissions
                 Forms\Components\TextInput::make('name')
                     ->label('Tên danh mục')
                     ->placeholder('Nhập tên danh mục')
-                    ->required()
-                    ->maxLength(255),
+                    ->markAsRequired()
+                    ->rules(['required',
+                        'max:255',
+                        fn ($record) => $record
+                        ? "unique:categories,name,{$record->id}"
+                        : 'unique:categories,name'])
+                    ->validationMessages([
+                        'required' => 'Tên danh mục không được để trống.',
+                        'max' => 'Tên danh mục không được vượt quá :max ký tự.',
+                        'unique' => 'Tên danh mục đã tồn tại. Vui lòng chọn tên khác.',
+                    ]),
                 Forms\Components\Select::make('parent_id')
                     ->relationship('parent', 'name')
                     ->label('Danh mục cha')
                     ->placeholder('Chọn danh mục cha')
                     ->searchable()
                     ->preload(),
-                Forms\Components\TextInput::make('description')
+                Forms\Components\Textarea::make('description')
                     ->label('Mô tả')
-                    ->placeholder('Nhập mô tả'),
+                    ->placeholder('Nhập mô tả')
+                    ->rows(4)
+                    ->autosize(),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->recordUrl(null)
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('Tên danh mục')
@@ -106,7 +121,13 @@ class CategoryResource extends Resource implements HasShieldPermissions
                 Tables\Actions\EditAction::make()
                     ->label('Sửa'),
                 Tables\Actions\DeleteAction::make()
-                    ->label('Xóa'),
+                    ->label('Xóa')
+                    ->successNotification(
+                        Notification::make()
+                            ->title('Danh mục tin tức đã xóa')
+                            ->success()
+                            ->body('Danh mục tin tức đã được xóa thành công.')
+                    ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -129,5 +150,10 @@ class CategoryResource extends Resource implements HasShieldPermissions
             'create' => Pages\CreateCategory::route('/create'),
             'edit' => Pages\EditCategory::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string // customize so luong hien thi trong badge
+    {
+        return static::getModel()::count();
     }
 }
