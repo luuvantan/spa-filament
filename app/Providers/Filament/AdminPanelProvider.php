@@ -36,8 +36,8 @@ class AdminPanelProvider extends PanelProvider
 //                'gray' => Color::Sky
             ])
             ->font('Inter')
-            ->brandName('CSCL-TW Admin')
-            ->brandLogo(Storage::url('images/logo.png'))->brandLogoHeight('3rem')
+            ->brandName('Spa Admin')
+            ->brandLogo(Storage::url('images/logo-mobibeat.png'))->brandLogoHeight('3rem')
             ->renderHook(
                 PanelsRenderHook::AUTH_LOGIN_FORM_BEFORE,
                 fn (): string => Blade::render(<<<'HTML'
