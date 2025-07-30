@@ -37,7 +37,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->font('Inter')
             ->brandName('Spa Admin')
-            ->brandLogo(Storage::url('images/logo-mobibeat.png'))->brandLogoHeight('3rem')
+            ->brandLogo(Storage::url('images/logo.png'))->brandLogoHeight('3rem')
             ->renderHook(
                 PanelsRenderHook::AUTH_LOGIN_FORM_BEFORE,
                 fn (): string => Blade::render(<<<'HTML'
