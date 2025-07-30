@@ -15,6 +15,7 @@ class PostPolicy
      */
     public function viewAny(User $user): bool
     {
+        return true;
         return $user->can('view_any_post');
     }
 
@@ -23,6 +24,7 @@ class PostPolicy
      */
     public function view(User $user, Post $post): bool
     {
+        return true;
         return $user->can('view_post');
     }
 
@@ -31,6 +33,7 @@ class PostPolicy
      */
     public function create(User $user): bool
     {
+        return true;
         return $user->can('create_post');
     }
 
@@ -39,6 +42,7 @@ class PostPolicy
      */
     public function update(User $user, Post $post): bool
     {
+        return true;
         return $user->can('update_post');
     }
 
@@ -63,6 +67,7 @@ class PostPolicy
      */
     public function forceDelete(User $user, Post $post): bool
     {
+        return true;
         return $user->can('{{ ForceDelete }}');
     }
 
@@ -71,6 +76,7 @@ class PostPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
+        return true;
         return $user->can('{{ ForceDeleteAny }}');
     }
 
@@ -79,6 +85,7 @@ class PostPolicy
      */
     public function restore(User $user, Post $post): bool
     {
+        return true;
         return $user->can('{{ Restore }}');
     }
 
@@ -95,6 +102,7 @@ class PostPolicy
      */
     public function replicate(User $user, Post $post): bool
     {
+        return true;
         return $user->can('{{ Replicate }}');
     }
 
@@ -103,6 +111,7 @@ class PostPolicy
      */
     public function reorder(User $user): bool
     {
+        return true;
         return $user->can('{{ Reorder }}');
     }
 }

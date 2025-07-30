@@ -13,18 +13,25 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('phone')->unique();
-            $table->string('email')->nullable();
-            $table->date('birthday')->nullable();
-            $table->enum('gender', ['male', 'female', 'other'])->nullable();
-            $table->text('note')->nullable();
-            $table->unsignedInteger('visit_count')->default(0);
-            $table->string('address')->nullable();
-            $table->string('hometown')->nullable();
-            $table->enum('customer_type', ['regular', 'vip', 'new'])->default('regular');
+            $table->string('name');                  // Tên khách hàng
+            $table->date('birthday')->nullable();    // Ngày sinh
+            $table->string('phone')->nullable();     // SĐT
+            $table->string('occupation')->nullable();// Nghề nghiệp
+            $table->string('facebook')->nullable();  // Facebook
+            $table->string('rank')->nullable();      // Hạng
+            $table->string('gender')->nullable();    // Giới tính
+            $table->string('city')->nullable();      // Tỉnh/Tp
+            $table->string('district')->nullable();  // Quận/Huyện
+            $table->string('ward')->nullable();      // Phường/Xã
+            $table->string('address')->nullable();   // Địa chỉ chi tiết
+            $table->string('source')->nullable();    // Nguồn khách hàng
+            $table->string('referrer')->nullable();  // Người giới thiệu
+            $table->string('branch')->nullable();    // Chi nhánh
+            $table->text('note')->nullable();        // Ghi chú
+            $table->string('photo_path')->nullable();// Ảnh khách hàng
             $table->timestamps();
         });
+        
     }
 
     /**

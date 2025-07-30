@@ -23,9 +23,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Storage;
 
-class PostResource extends Resource implements HasShieldPermissions
+class PostResource extends Resource
 {
-    use HasShieldFormComponents;
+    //use HasShieldFormComponents;
     protected static ?string $model = Post::class;
 
     protected static ?string $modelLabel = 'Bài viết'; // customize ten cua model
@@ -38,21 +38,21 @@ class PostResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationBadgeTooltip = 'Số bài viết trong hệ thống';
 
-    protected static ?string $navigationGroup = 'Quản lý tin tức';
+    // protected static ?string $navigationGroup = 'Quản lý tin tức';
 
     protected static ?int $navigationSort = 1;
 
-    public static function getPermissionPrefixes(): array
-    {
-        return [
-            'view',
-            'view_any',
-            'create',
-            'update',
-            'delete',
-            'delete_any',
-        ];
-    }
+    // public static function getPermissionPrefixes(): array
+    // {
+    //     return [
+    //         'view',
+    //         'view_any',
+    //         'create',
+    //         'update',
+    //         'delete',
+    //         'delete_any',
+    //     ];
+    // }
 
     public static function form(Form $form): Form
     {
@@ -315,8 +315,8 @@ class PostResource extends Resource implements HasShieldPermissions
         ];
     }
 
-    public static function getNavigationBadge(): ?string // customize so luong hien thi trong badge
-    {
-        return static::getModel()::count();
-    }
+    // public static function getNavigationBadge(): ?string // customize so luong hien thi trong badge
+    // {
+    //     return static::getModel()::count();
+    // }
 }
