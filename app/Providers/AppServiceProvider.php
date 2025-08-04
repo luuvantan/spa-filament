@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Laravel\Passport\Passport;
+use Livewire\Livewire;
 
 class AppServiceProvider extends ServiceProvider
 {
