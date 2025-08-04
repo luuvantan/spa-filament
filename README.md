@@ -108,16 +108,3 @@ php artisan tinker
 - **Cập nhật dependency**: Chạy `composer update` để đảm bảo các gói mới nhất.
 - **Tùy chỉnh giao diện**: Các thay đổi về giao diện và logic CMS thường được thực hiện trong các file resource (`List*.php`, `Create*.php`, `Edit*.php`).
 
-## 📚 Tài liệu tham khảo
-- [Filament PHP Documentation](https://filamentphp.com/docs)
-- [Laravel Documentation](https://laravel.com/docs)
-- Repository: [dangphuong3110/base-filament](https://github.com/dangphuong3110/base-filament)
-
----
-
-## 🙋 Hỗ trợ
-Nếu bạn gặp vấn đề hoặc cần hỗ trợ thêm, hãy:
-- Mở issue trên [GitHub](https://github.com/dangphuong3110/base-filament/issues).
-- Liên hệ tác giả qua email hoặc các kênh được cung cấp trong repository.
-
-Chúc bạn thành công với dự án! 🎉
