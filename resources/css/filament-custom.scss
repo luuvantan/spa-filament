@@ -1,0 +1,117 @@
+@font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('/resources/fonts/PlusJakartaSans-Regular.ttf') format('truetype');
+    font-weight: 400; // 400 là "Regular"
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('/resources/fonts/PlusJakartaSans-Bold.ttf') format('truetype');
+    font-weight: 700; // 700 là "Bold"
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('/resources/fonts/PlusJakartaSans-Medium.ttf') format('truetype');
+    font-weight: 500; // 700 là "Bold"
+    font-style: normal;
+}
+body.fi-body{
+    background: #e4ebf7;
+    font-family: Plus Jakarta Sans, serif;
+}
+.fi-layout{
+    gap: 10px;
+}
+.fi-main-ctn{
+    background: #FFFFFF;
+}
+.fi-main{
+    width: 100%;
+}
+.fi-sidebar-nav{
+    background: #FFFFFF;
+    >ul>li.fi-active>ul>li{
+        //padding-left: 31px;
+        background: none;
+        >a{
+            background: none;
+        }
+    }
+    >ul>li.fi-active>.fi-sidebar-group-button{
+        background: #D9EDFF;
+        border-radius: 12px;
+        color: #454545;
+    }
+    >ul>li.fi-active>.fi-sidebar-group-button span, >ul>li.fi-active>.fi-sidebar-group-button button{
+        font-weight: bold;
+    }
+}
+
+.fi-resource-list-records-page{
+    .fi-ta-ctn{
+        box-shadow: none;
+        .fi-pagination{
+            border: none;
+        }
+        .fi-ta-selection-indicator{
+            border: none;
+            background: none;
+        }
+    }
+    .fi-ta-content{
+        border-radius: 16px;
+        border: 1px solid #E7E7E7;
+        border-top-width: unset !important;
+        border-bottom-width: unset !important;
+        thead tr{
+            background: #E7E7E7;
+            span.fi-ta-header-cell-label{
+                font-weight: 500;
+            }
+        }
+        tbody tr{
+            border: none;
+        }
+    }
+    /* Di chuyển khối nút hành động (Tạo mới) ra sau ô tìm kiếm */
+    .fi-ta-header-ctn {
+        order: 3;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        .fi-ta-header{
+            order: 1;
+            padding: 0
+        }
+        .fi-ta-header-toolbar{
+            border: none;
+            padding-right: 0;
+            padding-left: 0;
+        }
+    }
+}
+
+// css cho Tạo mới thẻ ( lựa chọn loại thẻ ở 1 dòng )
+.radio-options-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+/* Tùy chỉnh màu cho Radio Button */
+.custom-blue-radio {
+    /* Định nghĩa biến màu xanh của bạn */
+    --radio-color: #1DC9A0;
+}
+
+/* Đổi màu viền khi được chọn */
+.custom-blue-radio input[type=radio]:checked {
+    background-color: #1DC9A0 !important;
+}
+
+/* Đổi màu chấm tròn bên trong khi được chọn */
+.custom-blue-radio input[type=radio]:checked {
+    fill: #1DC9A0 !important;
+}
+
+
