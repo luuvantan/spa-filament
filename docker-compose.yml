@@ -3,7 +3,7 @@ services:
         build:
             context: ./
             dockerfile: .dockers/Dockerfile
-        container_name: cscl-tw-app
+        container_name: spa-app
         restart: unless-stopped
         working_dir: /var/www/
         volumes:
@@ -14,13 +14,13 @@ services:
 
     db:
         image: 'mysql'
-        container_name: cscl-tw-db
+        container_name: spa-db
         restart: unless-stopped
         environment:
-            MYSQL_DATABASE: cscl_tw
-            MYSQL_ROOT_PASSWORD: cscl_tw
-            MYSQL_PASSWORD: cscl_tw
-            MYSQL_USER: cscl_tw
+            MYSQL_DATABASE: spa_db
+            MYSQL_ROOT_PASSWORD: spa
+            MYSQL_PASSWORD: spa
+            MYSQL_USER: spa
         volumes:
             - ./.dockers/mysql:/var/lib/mysql
         ports:
@@ -29,7 +29,7 @@ services:
             - be_net
     nginx:
         image: nginx:alpine
-        container_name: cscl-tw-nginx
+        container_name: spa-nginx
         restart: unless-stopped
         ports:
             - "9080:80"
