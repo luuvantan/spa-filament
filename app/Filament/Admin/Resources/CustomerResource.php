@@ -193,18 +193,29 @@ class CustomerResource extends Resource
 {
     return $table
         ->columns([
-            // ID hiển thị màu, đứng riêng
-            Tables\Columns\TextColumn::make('id')
-                ->label('ID')
-                ->formatStateUsing(fn ($state) => 'ID ' . $state)
-                ->color('primary')
-                ->sortable(),
+//            // ID hiển thị màu, đứng riêng
+//            Tables\Columns\TextColumn::make('id')
+//                ->label('Tên KH')
+//                ->formatStateUsing(fn ($state) => 'ID' . $state)
+//                ->color('primary')
+//                ->sortable()
+//                ->description(fn (Customer $record) => $record->name),
+//
+//            // Tên khách hàng
+//            Tables\Columns\TextColumn::make('name')
+//                ->label('Tên KH')
+//                ->searchable()
+//                ->description(fn (Customer $record) => $record->name),
 
-            // Tên khách hàng
             Tables\Columns\TextColumn::make('name')
                 ->label('Tên KH')
+                ->html()
+                ->formatStateUsing(function ($state, Customer $record) {
+                    return "<span class='text-primary font-semibold'>ID{$record->id}</span><br>
+                            <span style='color: #454545;' class='text-sm font-semibold'>{$record->name}</span>";
+                })
                 ->searchable()
-                ->description(fn (Customer $record) => $record->name),
+                ->sortable(),
 
             Tables\Columns\TextColumn::make('birthday')
                 ->label('Ngày sinh')
@@ -212,7 +223,8 @@ class CustomerResource extends Resource
                 ->sortable(),
 
             Tables\Columns\TextColumn::make('phone')
-                ->label('SĐT'),
+                ->label('SĐT')
+                ->searchable(),
 
             Tables\Columns\TextColumn::make('gender')
                 ->label('Giới tính')
@@ -227,7 +239,8 @@ class CustomerResource extends Resource
                 ->label('Hạng'),
 
             Tables\Columns\TextColumn::make('address')
-                ->label('Địa chỉ'),
+                ->label('Địa chỉ')
+                ->limit(30),
 
             Tables\Columns\TextColumn::make('status')
                 ->label('Trạng thái')
@@ -244,6 +257,7 @@ class CustomerResource extends Resource
         ->filters([
             // nếu cần thêm bộ lọc như trạng thái, giới tính...
         ])
+        ->searchable(false)
         ->actions([
             Tables\Actions\ViewAction::make(),
             Tables\Actions\EditAction::make(),
