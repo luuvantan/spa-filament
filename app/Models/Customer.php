@@ -17,9 +17,13 @@ class Customer extends Model
         'address',
         'hometown',
         'customer_type',
+        'city',
+        'district',
+        'ward',
+        'rank'
     ];
 
     protected $casts = [
-        
-    ];    
+
+    ];
 }

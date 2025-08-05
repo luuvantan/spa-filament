@@ -11,6 +11,7 @@ use Filament\Tables\Table;
 use Filament\Forms\Components\Placeholder;
 use Filament\Tables\Filters\Tabs\Tab;
 use App\Filament\Admin\Resources\CustomerResource\Pages;
+use Illuminate\Support\Collection;
 
 class CustomerResource extends Resource
 {
@@ -26,6 +27,7 @@ class CustomerResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $locations = collect(config('locations'));
         return $form
         ->schema([
             Forms\Components\Grid::make(2)->schema([
@@ -91,16 +93,41 @@ class CustomerResource extends Resource
                                 Forms\Components\Grid::make(3)->schema([
                                     Forms\Components\Select::make('city')
                                         ->label('Tp')
-                                        ->markAsRequired()
-                                        ->rules(['required']),
-
-                                    Forms\Components\Select::make('ward')
-                                        ->label('Phường/Xã')
+                                        ->options(
+                                            $locations->pluck('name', 'level1_id')
+                                        )
+                                        ->reactive()
+                                        ->afterStateUpdated(function (callable $set) {
+                                            $set('district', null);
+                                            $set('ward', null);
+                                        })
                                         ->markAsRequired()
                                         ->rules(['required']),
 
                                     Forms\Components\Select::make('district')
                                         ->label('Quận')
+                                        ->options(function (callable $get) use ($locations) {
+                                            $cityId = $get('city');
+                                            $city = collect($locations)->firstWhere('level1_id', $cityId);
+
+                                            return collect($city['level2s'] ?? [])->pluck('name', 'level2_id');
+                                        })
+                                        ->reactive()
+                                        ->afterStateUpdated(fn (callable $set) => $set('ward', null))
+                                        ->markAsRequired()
+                                        ->rules(['required']),
+
+                                    Forms\Components\Select::make('ward')
+                                        ->label('Phường/Xã')
+                                        ->options(function (callable $get) use ($locations): Collection {
+                                            $cityId = $get('city');
+                                            $districtId = $get('district');
+                                            $city = collect($locations)->firstWhere('level1_id', $cityId);
+                                            $district = collect($city['level2s'] ?? [])->firstWhere('level2_id', $districtId);
+
+                                            return collect($district['level3s'] ?? [])->pluck('name', 'level3_id');
+                                        })
+
                                         ->markAsRequired()
                                         ->rules(['required']),
                                 ]),
@@ -113,6 +140,11 @@ class CustomerResource extends Resource
                         Forms\Components\Grid::make(3)->schema([
                             Forms\Components\Select::make('source')
                                 ->label('Nguồn khách hàng')
+                                ->options(
+                                    [
+                                        "default" => "Default"
+                                    ]
+                                )
                                 ->markAsRequired()
                                 ->rules(['required']),
 
@@ -122,6 +154,11 @@ class CustomerResource extends Resource
 
                             Forms\Components\Select::make('branch')
                                 ->label('Chi nhánh')
+                                ->options(
+                                    [
+                                        "default" => "Default"
+                                    ]
+                                )
                                 ->markAsRequired()
                                 ->rules(['required']),
                         ]),
@@ -156,18 +193,29 @@ class CustomerResource extends Resource
 {
     return $table
         ->columns([
-            // ID hiển thị màu, đứng riêng
-            Tables\Columns\TextColumn::make('id')
-                ->label('ID')
-                ->formatStateUsing(fn ($state) => 'ID ' . $state)
-                ->color('primary')
-                ->sortable(),
+//            // ID hiển thị màu, đứng riêng
+//            Tables\Columns\TextColumn::make('id')
+//                ->label('Tên KH')
+//                ->formatStateUsing(fn ($state) => 'ID' . $state)
+//                ->color('primary')
+//                ->sortable()
+//                ->description(fn (Customer $record) => $record->name),
+//
+//            // Tên khách hàng
+//            Tables\Columns\TextColumn::make('name')
+//                ->label('Tên KH')
+//                ->searchable()
+//                ->description(fn (Customer $record) => $record->name),
 
-            // Tên khách hàng
             Tables\Columns\TextColumn::make('name')
                 ->label('Tên KH')
+                ->html()
+                ->formatStateUsing(function ($state, Customer $record) {
+                    return "<span class='text-primary font-semibold'>ID{$record->id}</span><br>
+                            <span style='color: #454545;' class='text-sm font-semibold'>{$record->name}</span>";
+                })
                 ->searchable()
-                ->description(fn (Customer $record) => $record->name),
+                ->sortable(),
 
             Tables\Columns\TextColumn::make('birthday')
                 ->label('Ngày sinh')
@@ -175,7 +223,8 @@ class CustomerResource extends Resource
                 ->sortable(),
 
             Tables\Columns\TextColumn::make('phone')
-                ->label('SĐT'),
+                ->label('SĐT')
+                ->searchable(),
 
             Tables\Columns\TextColumn::make('gender')
                 ->label('Giới tính')
@@ -190,7 +239,8 @@ class CustomerResource extends Resource
                 ->label('Hạng'),
 
             Tables\Columns\TextColumn::make('address')
-                ->label('Địa chỉ'),
+                ->label('Địa chỉ')
+                ->limit(30),
 
             Tables\Columns\TextColumn::make('status')
                 ->label('Trạng thái')
@@ -207,6 +257,7 @@ class CustomerResource extends Resource
         ->filters([
             // nếu cần thêm bộ lọc như trạng thái, giới tính...
         ])
+        ->searchable(false)
         ->actions([
             Tables\Actions\ViewAction::make(),
             Tables\Actions\EditAction::make(),
@@ -214,13 +265,13 @@ class CustomerResource extends Resource
         ->bulkActions([
             Tables\Actions\DeleteBulkAction::make(),
         ])
-        
+
         ->striped()
         ->paginated([10, 25, 50]);
 }
 
 
-    
+
 
     public static function getPages(): array
     {
