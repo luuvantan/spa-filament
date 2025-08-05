@@ -18,11 +18,11 @@ class ListCustomers extends ListRecords
     {
         return 'vendor.livewire.components.pagination';
     }
-    
+
     protected function getHeaderActions(): array
     {
         return [
-            //Actions\CreateAction::make(),
+            Actions\CreateAction::make(),
         ];
     }
     // protected static string $view = 'filament.customers.list';
@@ -40,5 +40,5 @@ class ListCustomers extends ListRecords
     //     ];
     // }
 
-    
+
 }
