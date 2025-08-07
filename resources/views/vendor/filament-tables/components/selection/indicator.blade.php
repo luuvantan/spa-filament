@@ -1,5 +1,5 @@
 @php
-    $locale = app()->getLocale();
+    $locale = app()->getLocale() ?: 'vi';
 @endphp
 
 @props([
