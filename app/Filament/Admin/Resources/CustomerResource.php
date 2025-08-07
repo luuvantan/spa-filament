@@ -11,6 +11,7 @@ use Filament\Tables\Table;
 use Filament\Forms\Components\Placeholder;
 use Filament\Tables\Filters\Tabs\Tab;
 use App\Filament\Admin\Resources\CustomerResource\Pages;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 class CustomerResource extends Resource
@@ -192,21 +193,36 @@ class CustomerResource extends Resource
     public static function table(Tables\Table $table): Tables\Table
 {
     return $table
-        ->columns([
-//            // ID hiển thị màu, đứng riêng
-//            Tables\Columns\TextColumn::make('id')
-//                ->label('Tên KH')
-//                ->formatStateUsing(fn ($state) => 'ID' . $state)
-//                ->color('primary')
-//                ->sortable()
-//                ->description(fn (Customer $record) => $record->name),
-//
-//            // Tên khách hàng
-//            Tables\Columns\TextColumn::make('name')
-//                ->label('Tên KH')
-//                ->searchable()
-//                ->description(fn (Customer $record) => $record->name),
+        ->query(Customer::query())
+        ->modifyQueryUsing(function (Builder $query, $livewire) {
+            if (property_exists($livewire, 'activeFilter') && $livewire->activeFilter) {
+                $filter = $livewire->activeFilter;
 
+                switch ($filter) {
+                    case 'all':
+                        break;
+                    case 'new_today':
+                        $query->whereDate('created_at', today());
+                        break;
+                    case 'today_birthdays':
+                        $query->whereMonth('birthday', now()->month)
+                            ->whereDay('birthday', now()->day);
+                        break;
+                    case 'week_birthdays':
+                        $query->whereBetween('birthday', [
+                            now()->startOfWeek(),
+                            now()->endOfWeek(),
+                        ]);
+                        break;
+                    case 'month_birthdays':
+                        $query->whereMonth('birthday', now()->month);
+                        break;
+                }
+            }
+
+            return $query;
+        })
+        ->columns([
             Tables\Columns\TextColumn::make('name')
                 ->label('Tên KH')
                 ->html()
@@ -256,6 +272,11 @@ class CustomerResource extends Resource
         ])
         ->filters([
             // nếu cần thêm bộ lọc như trạng thái, giới tính...
+            Tables\Filters\SelectFilter::make('gender')
+                ->options([
+                    'male' => 'Nam',
+                    'female' => 'Nữ'
+                ])
         ])
         ->searchable(false)
         ->actions([
