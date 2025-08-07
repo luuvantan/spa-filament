@@ -29,6 +29,15 @@ body.fi-body{
 .fi-main{
     width: 100%;
 }
+.br-12{
+    border-radius: 12px;
+}
+.ml-1{
+    margin-left: 1px;
+}
+.mr-10{
+    margin-right: 15px;
+}
 .fi-sidebar-nav{
     background: #FFFFFF;
     >ul>li.fi-active>ul>li{
@@ -78,7 +87,6 @@ body.fi-body{
     .fi-ta-header-ctn {
         order: 3;
         display: flex;
-        justify-content: flex-end;
         gap: 10px;
         .fi-ta-header{
             order: 1;
@@ -88,6 +96,7 @@ body.fi-body{
             border: none;
             padding-right: 0;
             padding-left: 0;
+            gap: 1px;
         }
     }
 }
@@ -114,4 +123,101 @@ body.fi-body{
     fill: #1DC9A0 !important;
 }
 
+.box-avatar{
+    .fi-avatar{
+        width: 40px;
+        height: 40px;
+        border-radius: 6px;
+    }
+}
+.name-user{
+    font-weight: 700;
+    font-size: 14px;
+}
 
+.custom-menu-left-danh-muc{
+    >ul{
+        margin-left: 12px;
+        gap: 0;
+        >li{
+            position: relative;
+            &:after{
+                content: "";
+                width: 2px;
+                height: 100%;
+                position: absolute;
+                left: 8px;
+                top: 0;
+                background: #D1D1D1;
+            }
+            &:last-child{
+                &:after{
+                    height: 44%
+                }
+            }
+        }
+        .fi-sidebar-item-grouped-border{
+            >div.absolute.w-px{
+                width: unset;
+            }
+            >div:last-child{
+                background-color: unset;
+                width: 80px;
+                border-bottom-width: 2px;
+                border-top-color: #D1D1D1;
+                border-bottom-color: #D1D1D1;
+                border-bottom-style: solid;
+                border-left-width: 2px;
+                border-left-color: #D1D1D1;
+                border-top-left-radius: 0;
+                border-bottom-right-radius: 0;
+                border-right-color: #D1D1D1;
+            }
+        }
+    }
+}
+
+.fi-main{
+    section>div{
+        padding: 16px 32px;
+        border-radius: 24px;
+        border: 1px solid #E7E7E7;
+    }
+    .text-sm.font-medium{
+        font-weight: 700;
+    }
+}
+.my-custom-save-button{
+    height: 45px;
+    width: 100%;
+}
+a.my-custom-link-button{
+    background-color: #00C0E8;
+    color: #ffffff;
+    svg{
+        color: #ffffff;
+    }
+    &:hover{
+        background: #00C0E8;
+    }
+}
+.custom-tabs-customer-card{
+    box-shadow: none !important;
+    .fi-tabs{
+        border-radius: 14px;
+        border: 1px solid #D1D1D1;
+        gap: 8px;
+        margin-bottom: 16px;
+        >button{
+            width: 50%;
+            height: 29px;
+            line-height: 29px;
+            &.fi-active, &:hover{
+                background: #D9EDFF;
+            }
+        }
+    }
+    .fi-fo-tabs-tab{
+        padding: 0;
+    }
+}
