@@ -132,7 +132,7 @@
 
 {{--        Thông tin user--}}
         <nav
-            class="flex h-16 items-center gap-x-4 bg-white px-4 shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10 md:px-6 lg:px-8"
+            class="flex h-16 items-center gap-x-4 bg-white px-4 shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10 md:px-1 lg:px-1 br-12 nav-user-login"
         >
             {{-- Hook để các plugin khác có thể thêm nội dung vào đầu topbar --}}
             {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\View\PanelsRenderHook::TOPBAR_START) }}
@@ -141,7 +141,7 @@
                 Div này rất quan trọng, class "ms-auto" (margin-start: auto)
                 sẽ đẩy tất cả nội dung bên trong nó về phía bên phải.
             --}}
-            <div class="ms-auto flex items-center gap-x-4">
+            <div class="flex items-center gap-x-4 box-avatar">
 
                 {{-- Kiểm tra xem người dùng đã đăng nhập chưa --}}
                 @if (filament()->auth()->check())
@@ -151,6 +151,13 @@
 
                 @endif
 
+            </div>
+
+            <div class="name-user-login">
+                @if(auth()->check())
+                    <p class="name-user mb-0">{{ auth()->user()->name }}</p>
+                    <p class="role-user"></p>
+                @endif
             </div>
 
             {{-- Hook để các plugin khác có thể thêm nội dung vào cuối topbar --}}
