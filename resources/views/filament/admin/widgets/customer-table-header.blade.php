@@ -3,7 +3,7 @@
         <!-- Stats Squares -->
         <div class="flex flex-row gap-3 w-fit mx-auto">
             <div wire:click="loadCustomer('all')" class="w-28 h-28 flex flex-col items-center justify-center p-3 bg-white rounded-xl shadow-sm border border-primary-600"
-                style="border-style: dashed; {{ $selectedStat === 'all' ? 'background-color: #BCF328; color: #454545;' : '' }}"
+                 style="border-style: dashed; {{ $selectedStat === 'all' ? 'background-color: #BCF328; color: #454545;' : '' }}"
             >
                 <h3 class="text-xs font-medium text-gray-500 truncate text-center">Tổng số khách hàng</h3>
                 <p class="text-lg font-bold text-gray-900 truncate">{{ $totalCustomers }}</p>
@@ -66,7 +66,7 @@
                 <x-filament::button
                     color="gray"
                     icon="heroicon-o-arrow-down-tray"
-                    wire:click="exportTable"
+                    wire:click="$dispatch('exportTable')"
                 >
                     Xuất dữ liệu
                 </x-filament::button>
@@ -82,4 +82,3 @@
         </div>
     </div>
 </x-filament-widgets::widget>
-```

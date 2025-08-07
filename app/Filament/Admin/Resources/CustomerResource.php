@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources;
 
+use App\Filament\Exports\CustomerExporter;
 use App\Models\Customer;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -292,6 +293,10 @@ class CustomerResource extends Resource
 }
 
 
+    public static function getExporter(): string
+    {
+        return CustomerExporter::class;
+    }
 
 
     public static function getPages(): array

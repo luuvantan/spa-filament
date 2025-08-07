@@ -7,6 +7,7 @@ use Filament\Widgets\Widget;
 
 class CustomerTableHeader extends Widget
 {
+    protected static bool $isDiscovered = false;
     protected static string $view = 'filament.admin.widgets.customer-table-header';
     protected int | string | array $columnSpan = 'full';
     public string $search = '';
