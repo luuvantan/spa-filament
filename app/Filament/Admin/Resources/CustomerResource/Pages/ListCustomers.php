@@ -9,11 +9,10 @@ use Filament\Resources\Pages\ListRecords;
 use App\Models\Customer;
 use Filament\Forms\Components\Tabs;
 
-
 class ListCustomers extends ListRecords
 {
     protected static string $resource = CustomerResource::class;
-
+    public ?string $activeFilter = null;
     public function paginationView(): string
     {
         return 'vendor.livewire.components.pagination';
@@ -40,7 +39,6 @@ class ListCustomers extends ListRecords
     //         'birthday_month' => Customer::whereMonth('birthday', now()->month)->count(),
     //     ];
     // }
-
     protected function getHeaderWidgets(): array
     {
         return [
@@ -50,13 +48,18 @@ class ListCustomers extends ListRecords
     protected function getListeners(): array
     {
         return [
-            'searchChanged' => 'applySearch'
+            'searchChanged' => 'applySearch',
+            'selectedStatChanged' => 'applyFilter',
         ];
     }
     public function applySearch(string $search): void
     {
         $this->tableSearch = $search; // Cập nhật thuộc tính tìm kiếm của bảng
         $this->resetPage();         // Cập nhật lại dữ liệu bảng
-
+    }
+    public function applyFilter(string $filter): void
+    {
+        $this->activeFilter = $filter;
+        $this->resetPage();
     }
 }
