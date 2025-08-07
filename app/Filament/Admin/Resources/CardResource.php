@@ -25,12 +25,14 @@ class CardResource extends Resource
 {
     protected static ?string $model = Card::class;
 
-    protected static ?string $modelLabel = 'Thẻ';
+    protected static ?string $modelLabel = 'Danh sách thẻ';
 
     protected static ?string $navigationGroup = 'Danh mục';
-    protected static ?string $navigationLabel = 'Thẻ';
+    protected static ?string $navigationLabel = 'Các loại thẻ';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+//    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationIcon = null;
 
     public static function form(Form $form): Form
     {
@@ -203,7 +205,7 @@ class CardResource extends Resource
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->label('Tạo mới')
+                    ->label('Cấp mới thẻ')
                     ->icon('heroicon-o-plus')
                     ->iconPosition(IconPosition::After),
             ])

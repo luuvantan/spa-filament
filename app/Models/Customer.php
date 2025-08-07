@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Customer extends Model
 {
@@ -26,6 +27,10 @@ class Customer extends Model
     protected $casts = [
 
     ];
+
+    public function customerCards(): HasMany {
+        return $this->hasMany(CustomerCard::class);
+    }
     public function payments()
     {
         return $this->hasMany(Payment::class);
