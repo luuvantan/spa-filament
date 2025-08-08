@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Filament\Admin\Resources\CardResource\Pages;
+namespace App\Filament\Admin\Resources\CustomerCardResource\Pages;
 
-use App\Filament\Admin\Resources\CardResource;
+use App\Filament\Admin\Resources\CustomerCardResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
-use Illuminate\Contracts\View\View;
 
-class CreateCard extends CreateRecord
+class CreateCustomerCard extends CreateRecord
 {
-    protected static string $resource = CardResource::class;
+    protected static string $resource = CustomerCardResource::class;
 
     protected function getFormActions(): array
     {

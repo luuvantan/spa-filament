@@ -15,6 +15,7 @@
         $attributes->class([
             'fi-page',
             'h-full' => $fullHeight,
+            'custom-resource-page' => method_exists($this, 'getResource') && $this->getResource() === \App\Filament\Admin\Resources\CardResource::class,
         ])
     }}
 >
