@@ -130,7 +130,7 @@
             @if (! $hasHeader) x-cloak @endif
             x-bind:hidden="! (@js($hasHeader) || (selectedRecords.length && @js(count($bulkActions))))"
             x-show="@js($hasHeader) || (selectedRecords.length && @js(count($bulkActions)))"
-            class="fi-ta-header-ctn divide-y divide-gray-200 dark:divide-white/10"
+            class="fi-ta-header-ctn divide-y divide-gray-200 dark:divide-white/10 justify-between"
         >
             {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::HEADER_BEFORE, scopes: static::class) }}
 
@@ -216,7 +216,7 @@
                 </div>
 
                 @if ($isGlobalSearchVisible || $hasFiltersDialog || $hasColumnToggleDropdown)
-                    <div class="ms-auto flex items-center gap-x-4">
+                    <div class="ms-auto flex items-center gap-x-4 justify-between">
                         {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_SEARCH_BEFORE, scopes: static::class) }}
 
                         @if ($isGlobalSearchVisible)

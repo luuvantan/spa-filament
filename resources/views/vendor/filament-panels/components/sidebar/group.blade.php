@@ -20,6 +20,7 @@
         $attributes->class([
             'fi-sidebar-group flex flex-col gap-y-1',
             'fi-active' => $active,
+            'custom-menu-left custom-menu-left-danh-muc' => $label === 'Danh mục',
         ])
     }}
 >
