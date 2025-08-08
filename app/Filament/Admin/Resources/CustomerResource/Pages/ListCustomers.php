@@ -18,6 +18,20 @@ class ListCustomers extends ListRecords
         return 'vendor.livewire.components.pagination';
     }
 
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\ExportAction::make('export')
+                ->exporter(CustomerResource::getExporter())
+                ->modalHeading('Xuất dữ liệu khách hàng')
+                ->modalDescription('Bạn có muốn xuất dữ liệu khách hàng không?')
+                ->formats([Actions\Exports\Enums\ExportFormat::Xlsx])
+                ->columnMapping(false)
+                ->extraAttributes(['style' => 'display: none']),
+        ];
+    }
+
+
 //    protected function getHeaderActions(): array
 //    {
 //        return [
@@ -50,6 +64,7 @@ class ListCustomers extends ListRecords
         return [
             'searchChanged' => 'applySearch',
             'selectedStatChanged' => 'applyFilter',
+            'exportTable' => 'triggerExport'
         ];
     }
     public function applySearch(string $search): void
@@ -61,5 +76,9 @@ class ListCustomers extends ListRecords
     {
         $this->activeFilter = $filter;
         $this->resetPage();
+    }
+    public function triggerExport(): void
+    {
+        $this->mountAction('export');
     }
 }
