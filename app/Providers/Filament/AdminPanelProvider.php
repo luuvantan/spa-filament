@@ -60,9 +60,6 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
             ])
             ->navigationGroups([
-                'Quản lý tin tức',
-                'Quản lý người dùng',
-                'Quản lý bệnh viện',
             ])
             ->middleware([
                 EncryptCookies::class,

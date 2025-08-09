@@ -18,7 +18,8 @@ RUN apt-get update && apt-get install -y \
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
 RUN install-php-extensions zip pdo_mysql mbstring exif pcntl bcmath gd sodium ftp ldap sockets gmp intl openssl
 
