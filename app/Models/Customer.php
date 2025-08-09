@@ -26,4 +26,12 @@ class Customer extends Model
     protected $casts = [
 
     ];
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+    public function cards()
+    {
+        return $this->hasMany(Card::class);
+    }
 }
