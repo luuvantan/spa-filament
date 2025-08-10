@@ -31,4 +31,16 @@ class Customer extends Model
     public function customerCards(): HasMany {
         return $this->hasMany(CustomerCard::class);
     }
+    public function payments() : HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+    public function cards() : HasMany
+    {
+        return $this->hasMany(Card::class);
+    }
+    public  function notes() : HasMany
+    {
+        return $this->hasMany(Note::class);
+    }
 }
