@@ -221,3 +221,8 @@ a.my-custom-link-button{
         padding: 0;
     }
 }
+.fi-resource-customers{
+    .fi-dropdown-trigger {
+        display: none !important;
+    }
+}
