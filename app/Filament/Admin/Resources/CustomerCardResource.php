@@ -90,8 +90,8 @@ class CustomerCardResource extends Resource
                 Grid::make(2)->schema([
                     Select::make('card_type')
                         ->options([
-                            'Thẻ liệu trình' => 'Thẻ liệu trình',
-                            'Thẻ tiền' => 'Thẻ tiền',
+                            'thelieutrinh' => 'Thẻ liệu trình',
+                            'thetien' => 'Thẻ tiền',
                         ])
                         ->required()
                         ->label('Loại thẻ'),
@@ -113,13 +113,13 @@ class CustomerCardResource extends Resource
                                         ->schema([
                                             TextInput::make('name') // <-- Đổi thành 'name' để khớp với model Service
                                             ->placeholder('Dịch vụ') // <-- Thêm placeholder
-                                            ->required()
+//                                            ->required()
                                                 ->hiddenLabel(), // <-- Ẩn label
 
                                             TextInput::make('sessions')
                                                 ->placeholder('Số buổi') // <-- Thêm placeholder
                                                 ->numeric()
-                                                ->required()
+//                                                ->required()
                                                 ->hiddenLabel(), // <-- Ẩn label
 
                                             Select::make('status')
@@ -128,16 +128,16 @@ class CustomerCardResource extends Resource
                                                     'Đang thực hiện' => 'Đang thực hiện',
                                                     'Chưa thực hiện' => 'Chưa thực hiện',
                                                 ])
-                                                ->required()
+//                                                ->required()
                                                 ->hiddenLabel(), // <-- Ẩn label
                                         ])
                                         ->columns(3)
                                         ->addActionLabel('Thêm dịch vụ'),
                                 ]),
                             Tabs\Tab::make('Ghi chú')
-                                ->schema([
-                                    Textarea::make('service_notes')->label('Nội dung ghi chú'),
-                                ]),
+//                                ->schema([
+//                                    Textarea::make('service_notes')->label('Nội dung ghi chú'),
+//                                ]),
                         ]),
                 ]),
             ]);
@@ -149,7 +149,7 @@ class CustomerCardResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('customer.name')->label('Khách hàng')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('card.name')->label('Tên thẻ')->searchable(),
-                Tables\Columns\TextColumn::make('branch.name')->label('Chi nhánh')->searchable(),
+//                Tables\Columns\TextColumn::make('branch.name')->label('Chi nhánh')->searchable(),
                 Tables\Columns\TextColumn::make('end_date')->label('Ngày hết hạn')->date('d/m/Y')->sortable(),
             ])
             ->filters([

@@ -32,11 +32,18 @@ body.fi-body{
 .br-12{
     border-radius: 12px;
 }
+.mb-12{
+    margin-bottom: 12px;
+}
 .ml-1{
     margin-left: 1px;
 }
 .mr-10{
     margin-right: 15px;
+}
+.border-gray{
+    border: 1px solid #B0B0B0;
+    border-radius: 12px;
 }
 .fi-sidebar-nav{
     background: #FFFFFF;
@@ -88,6 +95,8 @@ body.fi-body{
         order: 3;
         display: flex;
         gap: 10px;
+        height: 40px;
+        padding-left: 2px;
         .fi-ta-header{
             order: 1;
             padding: 0
@@ -96,7 +105,11 @@ body.fi-body{
             border: none;
             padding-right: 0;
             padding-left: 0;
-            gap: 1px;
+            gap: 3px;
+        }
+
+        .fi-ta-search-field{
+            width: 600px;
         }
     }
 }
@@ -178,7 +191,7 @@ body.fi-body{
 }
 
 .fi-main{
-    section>div{
+    .fi-resource-create-record-page section>div, .fi-resource-edit-record-page section>div{
         padding: 16px 32px;
         border-radius: 24px;
         border: 1px solid #E7E7E7;

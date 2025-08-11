@@ -43,7 +43,8 @@
     }
 
     $buttonClasses = \Illuminate\Support\Arr::toCssClasses([
-        'fi-icon-btn relative flex items-center justify-center rounded-lg outline-none transition duration-75 focus-visible:ring-2',
+        'fi-icon-btn  relative flex items-center justify-center gap-2 br-12 transition duration-75 focus-visible:ring-2',
+         $icon == 'heroicon-m-view-columns' ? 'border-gray': '',
         'pointer-events-none opacity-70' => $disabled,
         ...match ($size) {
             ActionSize::ExtraSmall => [
@@ -125,6 +126,7 @@
 
 @if ($tag === 'button')
     <button
+        style="width: 68px;"
         @if ($keyBindings || $hasTooltip)
             x-data="{}"
         @endif
@@ -160,12 +162,15 @@
             </span>
         @endif
 
+        @if($icon === 'heroicon-m-view-columns')
+                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Lọc</span>
+        @endif
         <x-filament::icon
             :attributes="
                 \Filament\Support\prepare_inherited_attributes(
                     new \Illuminate\View\ComponentAttributeBag([
                         'alias' => $iconAlias,
-                        'icon' => $icon,
+                        'icon' => $icon === 'heroicon-m-view-columns' ? 'heroicon-o-adjustments-horizontal' : $icon,
                         'wire:loading.remove.delay.' . config('filament.livewire_loading_delay', 'default') => $hasLoadingIndicator,
                         'wire:target' => $hasLoadingIndicator ? $loadingIndicatorTarget : null,
                     ])

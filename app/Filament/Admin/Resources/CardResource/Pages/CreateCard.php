@@ -14,15 +14,14 @@ class CreateCard extends CreateRecord
     protected function getFormActions(): array
     {
         return [
-            // Nút "Tạo"
-            Actions\CreateAction::make()
-                ->label('Lưu') // <-- Đổi nhãn nút nếu muốn
+            $this->getCreateFormAction()
+                ->label('Lưu') // Tùy chỉnh nhãn
                 ->extraAttributes([
-                    'class' => 'my-custom-save-button', // <-- Thêm class CSS tùy chỉnh
+                    'class' => 'my-custom-save-button', // Thêm class CSS tùy chỉnh
                 ]),
 
-            // Bỏ comment dòng dưới nếu muốn giữ lại nút "Hủy"
-            // Actions\CancelAction::make(),
+            // Giữ nút "Hủy" nếu muốn
+//            $this->getCancelFormAction(),
         ];
     }
 }
