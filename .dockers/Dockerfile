@@ -32,8 +32,14 @@ RUN sed -i 's/<policy domain="coder" rights="none" pattern="PDF"/<policy domain=
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
 # Set working directory
 WORKDIR /var/www
+COPY . .
+RUN npm install
+
+RUN npm run build
+
+# RUN composer install --no-dev --optimize-autoloader
+# RUN chmod -R 777 storage bootstrap/cache
 
 EXPOSE 9000
