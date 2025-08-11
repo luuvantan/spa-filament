@@ -11,7 +11,7 @@ class CustomerTableHeader extends Widget
     protected static string $view = 'filament.admin.widgets.customer-table-header';
     protected int | string | array $columnSpan = 'full';
     public string $search = '';
-    public string $selectedStat = '';
+    public string $selectedStat = 'all';
     public $totalCustomers = 0;
     public $newCustomers = 0;
     public $todayBirthdays = 0;

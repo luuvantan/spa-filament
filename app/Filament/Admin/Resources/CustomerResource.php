@@ -228,7 +228,7 @@ class CustomerResource extends Resource
                 ->label('Tên KH')
                 ->html()
                 ->formatStateUsing(function ($state, Customer $record) {
-                    return "<span class='text-primary font-semibold'>ID{$record->id}</span><br>
+                    return "<span class='text-primary-500 font-semibold'>ID{$record->id}</span><br>
                             <span style='color: #454545;' class='text-sm font-semibold'>{$record->name}</span>";
                 })
                 ->searchable()
@@ -304,6 +304,7 @@ class CustomerResource extends Resource
         return [
             'index' => Pages\ListCustomers::route('/'),
             'create' => Pages\CreateCustomer::route('/create'),
+            'view' => Pages\ViewCustomer::route('/{record}'),
             'edit' => Pages\EditCustomer::route('/{record}/edit'),
         ];
     }
