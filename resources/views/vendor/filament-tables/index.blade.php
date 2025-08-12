@@ -130,20 +130,66 @@
             @if (! $hasHeader) x-cloak @endif
             x-bind:hidden="! (@js($hasHeader) || (selectedRecords.length && @js(count($bulkActions))))"
             x-show="@js($hasHeader) || (selectedRecords.length && @js(count($bulkActions)))"
-            class="fi-ta-header-ctn divide-y divide-gray-200 dark:divide-white/10 justify-between"
+            class="1111111111 fi-ta-header-ctn justify-between items-center"
         >
             {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::HEADER_BEFORE, scopes: static::class) }}
+            <div class="left-action">
+                @if ($isGlobalSearchVisible || $hasFiltersDialog || $hasColumnToggleDropdown)
+                    <div class="ms-auto flex items-center gap-x-4 justify-between search-default">
+                        {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_SEARCH_BEFORE, scopes: static::class) }}
 
-            @if ($header)
-                {{ $header }}
-            @elseif (($heading || $description || $headerActions) && ! $isReordering)
-                <x-filament-tables::header
-                    :actions="$isReordering ? [] : $headerActions"
-                    :actions-position="$headerActionsPosition"
-                    :description="$description"
-                    :heading="$heading"
-                />
-            @endif
+                        @if ($isGlobalSearchVisible)
+                            <x-filament-tables::search-field
+                                :debounce="$searchDebounce"
+                                :on-blur="$isSearchOnBlur"
+                                :placeholder="$getSearchPlaceholder()"
+                            />
+                        @endif
+
+                        {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_SEARCH_AFTER, scopes: static::class) }}
+
+                    </div>
+                @endif
+            </div>
+            <div class="right-action ms-auto flex items-center gap-x-4 justify-between">
+                @if ($hasFiltersDialog || $hasColumnToggleDropdown)
+                    @if ($hasFiltersDialog)
+                        <x-filament-tables::filters.dialog
+                            :active-filters-count="$activeFiltersCount"
+                            :apply-action="$getFiltersApplyAction()"
+                            :form="$getFiltersForm()"
+                            :layout="$filtersLayout"
+                            :max-height="$getFiltersFormMaxHeight()"
+                            :trigger-action="$filtersTriggerAction"
+                            :width="$getFiltersFormWidth()"
+                        />
+                    @endif
+
+                    {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_TOGGLE_COLUMN_TRIGGER_BEFORE, scopes: static::class) }}
+
+                    @if ($hasColumnToggleDropdown)
+                        <x-filament-tables::column-toggle.dropdown
+                            :form="$getColumnToggleForm()"
+                            :max-height="$getColumnToggleFormMaxHeight()"
+                            :trigger-action="$toggleColumnsTriggerAction"
+                            :width="$getColumnToggleFormWidth()"
+                        />
+                    @endif
+
+                    {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_TOGGLE_COLUMN_TRIGGER_AFTER, scopes: static::class) }}
+                @endif
+                @if ($header)
+                    {{ $header }}
+                @elseif (($heading || $description || $headerActions) && ! $isReordering)
+                    <x-filament-tables::header
+                        :actions="$isReordering ? [] : $headerActions"
+                        :actions-position="$headerActionsPosition"
+                        :description="$description"
+                        :heading="$heading"
+                    />
+                @endif
+            </div>
+
 
             {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::HEADER_AFTER, scopes: static::class) }}
 
@@ -175,93 +221,50 @@
 
             {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_BEFORE, scopes: static::class) }}
 
-            <div
-                @if (! $hasHeaderToolbar) x-cloak @endif
-                x-show="@js($hasHeaderToolbar) || (selectedRecords.length && @js(count($bulkActions)))"
-                class="fi-ta-header-toolbar flex items-center justify-between gap-x-4 px-4 py-3 sm:px-6"
-            >
-                {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_START, scopes: static::class) }}
+            {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_AFTER) }}
+        </div>
+        <div
+            @if (! $hasHeaderToolbar) x-cloak @endif
+        x-show="@js($hasHeaderToolbar) || (selectedRecords.length && @js(count($bulkActions)))"
+            class="fi-ta-header-toolbar flex items-center justify-between gap-x-4 py-3 border-none"
+        >
+            {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_START, scopes: static::class) }}
 
-                <div class="flex shrink-0 items-center gap-x-4">
-                    {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_REORDER_TRIGGER_BEFORE, scopes: static::class) }}
+            <div class="flex shrink-0 items-center gap-x-4">
+                {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_REORDER_TRIGGER_BEFORE, scopes: static::class) }}
 
-                    @if ($isReorderable)
-                        <span x-show="! selectedRecords.length">
+                @if ($isReorderable)
+                    <span x-show="! selectedRecords.length">
                             {{ $reorderRecordsTriggerAction }}
                         </span>
-                    @endif
-
-                    {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_REORDER_TRIGGER_AFTER, scopes: static::class) }}
-
-                    @if ((! $isReordering) && count($bulkActions))
-                        <x-filament-tables::actions
-                            :actions="$bulkActions"
-                            x-cloak="x-cloak"
-                            x-show="selectedRecords.length"
-                        />
-                    @endif
-
-                    {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_GROUPING_SELECTOR_BEFORE, scopes: static::class) }}
-
-                    @if ($areGroupingSettingsVisible)
-                        <x-filament-tables::groups
-                            :direction-setting="$isGroupingDirectionSettingHidden"
-                            :dropdown-on-desktop="$areGroupingSettingsInDropdownOnDesktop()"
-                            :groups="$groups"
-                            :trigger-action="$getGroupRecordsTriggerAction()"
-                        />
-                    @endif
-
-                    {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_GROUPING_SELECTOR_AFTER, scopes: static::class) }}
-                </div>
-
-                @if ($isGlobalSearchVisible || $hasFiltersDialog || $hasColumnToggleDropdown)
-                    <div class="ms-auto flex items-center gap-x-4 justify-between">
-                        {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_SEARCH_BEFORE, scopes: static::class) }}
-
-                        @if ($isGlobalSearchVisible)
-                            <x-filament-tables::search-field
-                                :debounce="$searchDebounce"
-                                :on-blur="$isSearchOnBlur"
-                                :placeholder="$getSearchPlaceholder()"
-                            />
-                        @endif
-
-                        {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_SEARCH_AFTER, scopes: static::class) }}
-
-                        @if ($hasFiltersDialog || $hasColumnToggleDropdown)
-                            @if ($hasFiltersDialog)
-                                <x-filament-tables::filters.dialog
-                                    :active-filters-count="$activeFiltersCount"
-                                    :apply-action="$getFiltersApplyAction()"
-                                    :form="$getFiltersForm()"
-                                    :layout="$filtersLayout"
-                                    :max-height="$getFiltersFormMaxHeight()"
-                                    :trigger-action="$filtersTriggerAction"
-                                    :width="$getFiltersFormWidth()"
-                                />
-                            @endif
-
-                            {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_TOGGLE_COLUMN_TRIGGER_BEFORE, scopes: static::class) }}
-
-                            @if ($hasColumnToggleDropdown)
-                                <x-filament-tables::column-toggle.dropdown
-                                    :form="$getColumnToggleForm()"
-                                    :max-height="$getColumnToggleFormMaxHeight()"
-                                    :trigger-action="$toggleColumnsTriggerAction"
-                                    :width="$getColumnToggleFormWidth()"
-                                />
-                            @endif
-
-                            {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_TOGGLE_COLUMN_TRIGGER_AFTER, scopes: static::class) }}
-                        @endif
-                    </div>
                 @endif
 
-                {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_END) }}
+                {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_REORDER_TRIGGER_AFTER, scopes: static::class) }}
+
+                @if ((! $isReordering) && count($bulkActions))
+                    <x-filament-tables::actions
+                        :actions="$bulkActions"
+                        x-cloak="x-cloak"
+                        x-show="selectedRecords.length"
+                    />
+                @endif
+
+                {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_GROUPING_SELECTOR_BEFORE, scopes: static::class) }}
+
+                @if ($areGroupingSettingsVisible)
+                    <x-filament-tables::groups
+                        :direction-setting="$isGroupingDirectionSettingHidden"
+                        :dropdown-on-desktop="$areGroupingSettingsInDropdownOnDesktop()"
+                        :groups="$groups"
+                        :trigger-action="$getGroupRecordsTriggerAction()"
+                    />
+                @endif
+
+                {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_GROUPING_SELECTOR_AFTER, scopes: static::class) }}
             </div>
 
-            {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_AFTER) }}
+
+            {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::TOOLBAR_END) }}
         </div>
 
         @if ($isReordering)
