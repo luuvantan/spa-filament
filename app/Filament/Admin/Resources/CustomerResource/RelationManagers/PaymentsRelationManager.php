@@ -97,7 +97,8 @@ class PaymentsRelationManager extends RelationManager
             ])
             ->bulkActions([
 
-            ]);
+            ])
+            ->paginated([10, 25, 50]);
     }
     public function updatedSearch($search): void
     {
@@ -107,10 +108,14 @@ class PaymentsRelationManager extends RelationManager
     public function calulateStats() : void
     {
         $query = $this->ownerRecord->payments();
-        $this->totalAmount = $query->sum('total_amount');
+        $uniqueAmounts = $query->selectRaw('MAX(total_amount) as unique_amount')
+            ->groupBy('invoice_code')
+            ->get();
+        $this->totalAmount = $uniqueAmounts->sum('unique_amount');
         $this->totalPaid = $query->sum('amount_paid');
         $this->totalDue = $query->sum('amount_due');
-        $this->paymentTimes = $query->where('customer_id', $this->ownerRecord->id)->distinct('invoice_code')->count();
+        $this->paymentTimes = $query->count();
+        $this->totalInvoice = $query->distinct('invoice_code')->count();
     }
     public function mount() : void
     {
